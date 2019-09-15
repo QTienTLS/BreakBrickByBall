@@ -1,0 +1,7 @@
+#myGameScreen{
+    background-color: black;
+    border: 3px solid green;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,0);
+}
