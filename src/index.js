@@ -1,15 +1,37 @@
+
 var myGameSreen = {
     canvas : document.createElement("canvas"),
     start  : function(){
+        document.getElementById("sbID").style.display = "none";
         this.canvas.id = "myGameScreen";
         this.context = this.canvas.getContext("2d");
         this.canvas.width = 500;
         this.canvas.height = 600;
         document.body.insertBefore(this.canvas,document.body.childNodes[0]);
-        this.interval = setInterval(updateMyGame,20);
+        // this.interval = setInterval(updateMyGame,20);
+        
+        //ctx.fillRect(90,220,170,1);
+        this.ball = new makeBall(120,170,10,"white",1,1);
+        //this.drawMenu();
+        this.interval = setInterval(updateMainMenu,15);
     },
     refresh : function(){
         this.context.clearRect(0,0,500,600);
+    },
+    drawMenu :function(){
+        let ctx = this.context;
+        ctx.fillStyle = "white";
+        ctx.font = "70px Mansalva";
+        ctx.fillText("Break Brick",100,270);
+        ctx.font = "40px Mansalva";
+        ctx.fillText("By Ball",250,320);
+        ctx.font='menu';
+        ctx.fillText("Make by: QTienTLS",190,400);
+        ctx.fillText("Version: 1.0",210,420);
+        ctx.fillText("This game make by pure javascript and it lacks some features of the original game",37,440);
+        ctx.fillText("Thank for playing !!!",190,460);
+        this.ball.moveInMenu();
+        this.ball.update();
     }
 }
 //tạo bóng và điều khiển các chuyển động của bóng
@@ -72,6 +94,15 @@ function makeBall(x,y,r,color,stepx,stepy){
             this.r = 0;
     this.x +=dx;
     this.y+=dy;
+    }
+    this.moveInMenu = function(){
+        if(this.y == 210 && this.stepy > 0)
+            this.stepy = -1;
+        else if(this.y == 170 && this.stepy < 0)
+            this.stepy = 1;
+        this.y+=this.stepy;
+       
+        
     }
  
 }
@@ -171,10 +202,15 @@ function makeBrick(value,x,y)
     }
 
 }
-var brick,brick2,brick3,brick4;
 function startGame(){
-    myGameSreen.start();
-}
-function updateMyGame(){
     myGameSreen.refresh();
+    clearInterval(myGameSreen.interval);
+    gameManager.drawScoreBoard();
+    player.x = 250;
+    player.drawPlayer();
+    
+}
+function updateMainMenu(){
+    myGameSreen.refresh();
+    myGameSreen.drawMenu();
 }

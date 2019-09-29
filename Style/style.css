@@ -1,7 +1,26 @@
 #myGameScreen{
+  
     background-color: black;
     border: 3px solid green;
     position: absolute;
     left: 50%;
     transform: translate(-50%,0);
+    font-family: 'Mansalva', cursive;
+}
+#sbID{
+    width: 270px;
+    height: 140px;
+    background-color: black;
+    border: 3px solid green;
+    position: absolute;
+    top: 30px;
+    left: 140px;
+}
+#playArea{
+    background-color: white;
+    width: 506px;
+    height: 120px;
+    position: absolute;
+    top: 614px;
+    left: 507px;
 }
