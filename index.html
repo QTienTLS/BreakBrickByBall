@@ -7,19 +7,19 @@
     <title>BrickBreaker</title>
     <link rel="stylesheet" href="Style/style.css">
     <link href="https://fonts.googleapis.com/css?family=Mansalva&display=swap" rel="stylesheet">
-    
-    
 </head>
-<body onload="myGameSreen.start()" >     
-    
+<body onload="myGameSreen.start()">     
 <button type="button" onclick="startGame()">New Game</button>
-
-    <canvas id="sbID">
-    </canvas>
-    <script src="src/gameManager.js"></script>
-    <script src="src/index.js"></script>
-    <script src="src/player.js"></script>
-<div id="playArea" onmousedown="player.mouseDown()" onmouseup="player.mouseUp()" onmousemove="player.mouseMove()"></div>
-
+<button type="button" onclick="createBrick()">make a brick</button>
+<canvas id="sbID">
+</canvas>
+<script src="src/gameManager.js"></script>
+<script src="src/index.js"></script>
+<script src="src/player.js"></script>
+<script src="src/gameLogic.js"></script>
+<script src="src/brick.js"></script>
+<script src="src/gameLogic.js"></script>
+<script src="src/ball.js"></script>
+<div id="allspace" ></div> 
 </body>
 </html>

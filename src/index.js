@@ -12,11 +12,16 @@ var myGameSreen = {
         
         //ctx.fillRect(90,220,170,1);
         this.ball = new makeBall(120,170,10,"white",1,1);
-        //this.drawMenu();
+        //this.drawMenu();  
         this.interval = setInterval(updateMainMenu,15);
+        
+        //this.canvas.onmousedown = function(){player.mouseDown(event)};
+        // this.canvas.onmouseup = function(){player.mouseUp(event)};
+        // this.canvas.onmousemove = function(){player.mouseMove(event)};
+        
     },
     refresh : function(){
-        this.context.clearRect(0,0,500,600);
+        this.context.clearRect(0,0,500,myGameSreen.canvas.height);
     },
     drawMenu :function(){
         let ctx = this.context;
@@ -34,181 +39,20 @@ var myGameSreen = {
         this.ball.update();
     }
 }
-//tạo bóng và điều khiển các chuyển động của bóng
-function makeBall(x,y,r,color,stepx,stepy){
-    this.x = x;
-    this.y = y;
-    this.r = r;
-    this.stepx = stepx;
-    this.stepy = stepy;
-    //vẽ bóng mỗi frame
-    this.update = function()
-    {
-        if(this.r > 0){
-    ctx = myGameSreen.context;
-    ctx.beginPath();
-    ctx.fillStyle = color;
-    ctx.arc(this.x,this.y,this.r,0,2*Math.PI,true);
-    ctx.fill();
-    ctx.closePath();}
-    }
-    this.moveController = function(){
-        dx = this.stepx;
-        dy = this.stepy;
-        //xử lí va chạm thành phải
-        if(this.x + dx >500 - this.r || this.x+dx<this.r)
-        {
-            this.stepx =  -this.stepx;
-            dx=this.stepx;
-        }
-       else if(dx>0 && dx+this.x+this.r > 500)
-    {
-        dx = this.stepx - ( this.x +this.r + this.stepx -500);
-    }
-        //xử lí va chạm thành trái
-        else if(dx<0 && this.x-this.r == 0)
-        {
-            this.stepx = - this.stepx;
-            dx = this.stepx;
-        }
-        else if(dx<0 && dx + this.x-this.r < 0)
-        {
-            dx = -this.x + this.r;
-        }
-        //xử lí va chạm thành trên
-        if(this.y-this.r==0)
-        {
-            this.stepy=-this.stepy;
-            dy= this.stepy;
-        }
-        if(dy + this.y - this.r < 0)
-        {
-            dy = this.r - this.y;
-        }
-        else if(dy + this.y + this.r > 600)
-        {
-            dy = 600 - this.y - this.r;
-        }
-        //sự kiện xóa bóng khi đi xuống biên dưới
-        if(this.y + this.r == 600)
-            this.r = 0;
-    this.x +=dx;
-    this.y+=dy;
-    }
-    this.moveInMenu = function(){
-        if(this.y == 210 && this.stepy > 0)
-            this.stepy = -1;
-        else if(this.y == 170 && this.stepy < 0)
-            this.stepy = 1;
-        this.y+=this.stepy;
-       
-        
-    }
- 
-}
-//tạo các khối gạch
-function makeBrick(value,x,y)
-{
-    randomNum = Math.floor((Math.random()*4)+1);
-    if(randomNum==4)
-    {
-        this.type = "tamgiac";
-        //biến triType biểu diễn loại tam giác sẽ được vẽ. nó nằm trong khoảng từ 1 tới 4 ứng với mỗi góc hình vuông k được vẽ
-        this.triType = Math.floor((Math.random()*4)+1);
-    }
-    else 
-    this.type = "hinhvuong";
-    this.value = value;
-    this.x = x;
-    this.y =y;
-    this.toughness = this.value;
-//biến toughness đặc trưng cho độ cứng của mỗi brick, khi nó xuống 0 thì khối brick sẽ vỡ
-//hàm vẽ khối brick
-    this.update = function(){
-        //chỉ vẽ khi chỉ số tougness của brick vẫn còn
-        if(this.toughness > 0)
-        {
-            // rEd = 255;
-            // gReen =255;
-            // bLue =255;
-            this.toughness = 50;
-            //hiệu ứng đổi màu mỗi khi khối brick bị đập trúng
-            rEd = Math.floor((this.toughness/this.value)*255);
-            gReen =  Math.floor(((this.value-this.toughness)/this.value)*255);
-            bLue = Math.floor(((this.value-this.toughness)/this.value)*150);
-            color = "rgb(" + rEd + "," + gReen + "," + bLue + ")";
-            ctx = myGameSreen.context;
-            ctx.strokeStyle = color;
-            ctx.fillStyle = color;
-            ctx.lineWidth =   5;
-            if(this.type == "hinhvuong")
-            //vẽ hình vuông
-            {
-                ctx.beginPath();
-                ctx.rect(this.x,this.y,50,50);
-                ctx.stroke();
-                ctx.closePath();
-                ctx.font = "12px Verdana";
-                ctx.fillText(this.toughness,this.x+15,this.y+30);
-            }
-            //vẽ tam giác
-            else
-                switch(this.triType)
-                {
-                    case 1:
-                        ctx.beginPath();
-                        ctx.moveTo(this.x+50,this.y);
-                        ctx.lineTo(this.x+50,this.y+50);
-                        ctx.lineTo(this.x,this.y+50);
-                        ctx.lineTo(this.x+50,this.y);
-                        ctx.stroke();
-                        ctx.closePath();
-                        ctx.font = "12px Verdana";
-                        ctx.fillText(this.toughness,this.x+25,this.y+40);
-                        break;
-                    case 2:
-                        ctx.beginPath();
-                        ctx.moveTo(this.x,this.y);
-                        ctx.lineTo(this.x+50,this.y+50);
-                        ctx.lineTo(this.x,this.y+50);
-                        ctx.lineTo(this.x,this.y);
-                        ctx.stroke();
-                        ctx.closePath();
-                        ctx.font = "12px Verdana";
-                        ctx.fillText(this.toughness,this.x+5,this.y+40);                            break;
-                    case 3:
-                        ctx.beginPath();
-                        ctx.moveTo(this.x,this.y);
-                        ctx.lineTo(this.x+50,this.y);
-                        ctx.lineTo(this.x+50,this.y+50);
-                        ctx.lineTo(this.x,this.y);
-                        ctx.stroke();
-                        ctx.closePath();                            
-                        ctx.font = "12px Verdana";
-                        ctx.fillText(this.toughness,this.x+23,this.y+16);
-                        break;
-                    default:
-                        ctx.beginPath();
-                        ctx.moveTo(this.x,this.y);
-                        ctx.lineTo(this.x+50,this.y);
-                        ctx.lineTo(this.x,this.y+50);
-                        ctx.lineTo(this.x,this.y);
-                        ctx.stroke();
-                        ctx.closePath();
-                        ctx.font = "12px Verdana";
-                        ctx.fillText(this.toughness,this.x+5,this.y+16);
-                }
-        }
-    }
-
-}
 function startGame(){
-    myGameSreen.refresh();
+    myGameSreen.refresh(); 
     clearInterval(myGameSreen.interval);
     gameManager.drawScoreBoard();
+    gameManager.ballNum = 10;
     player.x = 250;
+    player.y = myGameSreen.canvas.height;
     player.drawPlayer();
-    
+    console.log(player.y);
+   
+    //khai báo sự kiện kéo thả chuột trên khu vực chơi
+    document.getElementById("myGameScreen").onmousedown = function(){player.mouseDown(event)};
+    document.getElementById("allspace").onmouseup = function(){player.mouseUp(event)};
+    document.getElementById("allspace").onmousemove = function(){player.mouseMove(event)};
 }
 function updateMainMenu(){
     myGameSreen.refresh();
